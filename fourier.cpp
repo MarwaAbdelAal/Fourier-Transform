@@ -2,7 +2,6 @@
 #include <complex>
 #include <vector>
 #include <iostream>
-// #include <iomanip>
 #include <fstream>
 
 using namespace std;
@@ -130,60 +129,4 @@ int main()
     }
 
     cout<< "Number of lines = " << line <<'\n';
-
-
-    // Create a test signal
-    // int N = 1000;
-    // vector<complex<double>> signal;
-    // signal.reserve(N);
-
-    // double sigK = 3.0;
-    // double sigPhase = 0.0;
-
-    // for (int x=0; x<N; ++x)
-    // {
-    //     auto currentSample = complex<double>(cos((2*M_PI / static_cast<double>(N)) * sigK * static_cast<double>(x) + sigPhase), 0.0);
-    //     signal.push_back(currentSample);
-    // }
-
-    // // Compute the DFT
-    // vector<complex<double>> Fx = dft(signal);
-    
-    // // Compute the FFT
-    // vector<complex<double>> FFx = fft(signal);
-
-
-    // vector<complex<double>> data, dft_data;
-
-    // inFile.open("data.txt");
-    // while (inFile >> x)
-    // {
-    //     data.push_back(complex<double>(x));
-    // }
-
-    // inFile.clear();
-    // inFile.seekg(0, ios::beg);
-
-    // dft_data = dft(data);
-
-    // cout << '\n' << "DFT" << '\n';
-    // for (int i = 0; i < 6 ; i++)
-    // {
-    //     // cout << "DFT " << dft_data[i] << '\n';
-    //     cout << Fx[i].real()/static_cast<double>(N) << '\t' << Fx[i].imag()/static_cast<double>(N) << '\n';
-    // }
-
-    // cout << '\n' << "FFT" << '\n';
-
-    // for (int z = 0; z < 6; z++)
-    // {
-    //     cout << "FFT: " << FFx[z] <<'\n' ;
-    //     cout <<'\n' ;
-    //     // cout<<TransformedData[i].real()+TransformedData[i].imag()*1i;
-    // }
-
-    // for (int i = 0; i < 6 ; i++)
-    // {
-    //     cout << FFx[i].real()/static_cast<double>(N) << '\t' << FFx[i].imag()/static_cast<double>(N) << '\n';
-    // }
 }
