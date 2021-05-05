@@ -1,29 +1,17 @@
-#include <math.h>
+// #include <math.h>
 #include <complex>
 #include <vector>
 #include <iostream>
 #include <fstream>
-
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/complex.h>
 using namespace std;
 
-double x;
-
-ifstream inFile;
-
-// Reading file
-int line = 0;
-
-extern "C"
-{
-    void connect();
-    vector<complex<double>> dft(vector<complex<double>> data);
-    vector<complex<double>> fft(vector<complex<double>> &data);
-}
-
-void connect()
-{
-    printf("Connected to C extension...\n");
-}
+// double x;
+// ifstream inFile;
+// // Reading file
+// int line = 0;
 
 // samples is of type vector of complex the same as the output
 vector<complex<double>> dft(vector<complex<double>> data)
@@ -96,37 +84,45 @@ vector<complex<double>> fft(vector<complex<double>> &data)
     return freqbins;
 }
 
-
-int main()
-{
-
-    inFile.open("test");
-
-    vector<complex<double>> Data, dft_output, fft_output; // Create vectors of complex numbers
-
-    while (inFile >> x)
-    {
-        Data.push_back(complex<double>(x));
-    }
-
-    inFile.clear();
-    inFile.seekg(0, std::ios::beg);
-
-    dft_output = dft(Data);
-    fft_output = fft(Data);
-
-    for (int z = 0; z < fft_output.size(); z++)
-    {
-        cout << "DFT: " << dft_output[z] <<'\n' ;
-        cout << "FFT: " << fft_output[z] <<'\n' ;
-        cout << fft_output[z].real() << " + " << fft_output[z].imag() << 'i' << '\n';
-        cout <<'\n' ;
-    }
-
-    while (inFile >> x)
-    {
-        line++;
-    }
-
-    cout<< "Number of lines = " << line <<'\n';
+// Connection between python and c++
+PYBIND11_MODULE(module_name ,handle){
+    handle.def("dft", &dft, "A function returns dft");
+    handle.def("fft", &fft, "A function returns fft");
 }
+
+
+// int main()
+// {
+
+//     inFile.open("data1.txt");
+
+//     vector<complex<double>> Data, dft_output, fft_output; // Create vectors of complex numbers
+
+//     while (inFile >> x)
+//     {
+//         Data.push_back(complex<double>(x));
+//         cout << "x is "<< x<< " complex format is " << complex<double>(x) << endl;
+//     }
+
+//     inFile.clear();
+//     inFile.seekg(0, std::ios::beg);
+
+//     dft_output = dft(Data);
+//     fft_output = fft(Data);
+
+//     for (int z = 0; z < 10; z++)
+//     {
+//         cout << "input: " << Data[z] << endl;
+//         cout << "DFT: " << dft_output[z] <<'\n' ;
+//         cout << "FFT: " << fft_output[z] <<'\n' ;
+//         cout << fft_output[z].real() << " + " << fft_output[z].imag() << 'i' << '\n';
+//         cout <<'\n' ;
+//     }
+
+//     while (inFile >> x)
+//     {
+//         line++;
+//     }
+
+//     cout<< "Number of lines = " << line <<'\n';
+// }
