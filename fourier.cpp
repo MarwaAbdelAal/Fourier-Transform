@@ -1,82 +1,67 @@
-// #include <math.h>
 #include <complex>
 #include <vector>
 #include <iostream>
-#include <fstream>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/complex.h>
 using namespace std;
 
-// samples is of type vector of complex the same as the output
+// Fourier transform (DFT)
 vector<complex<double>> dft(vector<complex<double>> data)
 {
-    int N = data.size();
-    int K = N;
+    int numberOfData = data.size();
+    int K = numberOfData;
+    complex<double> frequency;
+    vector<complex<double>> frequencies;
+    frequencies.reserve(K);
 
-    // we will restore each value of X[k] into newData to then append it into the vector dftoutput
-    complex<double> newData;
-    vector<complex<double>> dftoutput;
-
-    // make the size of dftoutput the same as K (input size)
-    dftoutput.reserve(K);
-
-    // loop through each K
     for (int k = 0; k < K; k++)
     {
-        // loop through each n
-        newData = (0, 0);
-        for (int n = 0; n < N; n++)
+        frequency = (0, 0);
+        for (int n = 0; n < numberOfData; n++)
         {
-            double realPart = cos(((2 * M_PI) / N) * k * n);
-            double imagPart = sin(((2 * M_PI) / N) * k * n);
+            double realPart = cos(((2 * M_PI) / numberOfData) * k * n);
+            double imagPart = sin(((2 * M_PI) / numberOfData) * k * n);
             complex<double> w(realPart, -imagPart);
-            newData += data[n] * w;
+            frequency += data[n] * w;
         }
-        dftoutput.push_back(newData);
+        frequencies.push_back(frequency);
     }
-    return dftoutput;
+    return frequencies;
 }
 
+// Fast fourier transform (FFT)
 vector<complex<double>> fft(vector<complex<double>> &data)
 {
-    // find the number of data we have
-    int N = data.size();
-    // Execute the end of the recursive even/odd splits once we only have one sample
-    if (N == 1) {return data;}
+    int numberOfData = data.size();
+    if (numberOfData == 1) {return data;}    
 
     /* Split the sampels into even and odd subsums */
-    // Find half the total number of data
-    int M = N/2;
-    // Declare an even and odd complex vector
-    vector<complex<double>> Xeven(M,0);
-    vector<complex<double>> Xodd(M,0);
+    int halfOfData = numberOfData/2;
+    vector<complex<double>> evenSamples(halfOfData,0);
+    vector<complex<double>> oddSamples(halfOfData,0);
 
-    // Input the even and odd sampels into recursive vectors
-    for (int i = 0; i != M; i++)
+    for (int i = 0; i != halfOfData; i++)
     {
-        Xeven[i] = data[2*i];
-        Xodd[i] = data[2*i + 1];
+        evenSamples[i] = data[2*i];
+        oddSamples[i] = data[2*i + 1];
     }
     // Perform the recursive FFT operation on the odd and even sides
-    vector<complex<double>> Feven(M,0);
-    Feven = fft(Xeven);
-    vector<complex<double>> Fodd(M,0);
-    Fodd = fft(Xodd);
+    vector<complex<double>> evenFrequencies(halfOfData,0);
+    evenFrequencies = fft(evenSamples);
+    vector<complex<double>> oddFrequencies(halfOfData,0);
+    oddFrequencies = fft(oddSamples);
     /*------ END RECURSION ______ */
 
-    // Declare vector of frequency bins
-    vector<complex<double>> freqbins(N,0);
     // Combine the values found
-    for (int k = 0; k != N/2; k++)
+    vector<complex<double>> frequencies(numberOfData,0);
+    for (int k = 0; k != numberOfData/2; k++)
     {
-        // For each split set, we need to multiply a k-dependent comlpex number by the odd sunsum
-        complex<double> cmplxexponential = polar(1.0, -2*M_PI*k/N) * Fodd[k];
-        freqbins[k] = Feven[k] + cmplxexponential;
-        // Everytime you add pi, exponential changes sign
-        freqbins[k+N/2] = Feven[k] - cmplxexponential;
+        complex<double> complexExponential = polar(1.0, -2*M_PI*k/numberOfData) * oddFrequencies[k];
+        frequencies[k] = evenFrequencies[k] + complexExponential;
+        frequencies[k+numberOfData/2] = evenFrequencies[k] - complexExponential;
     }
-    return freqbins;
+    return frequencies;
 }
 
 // Connection between python and c++
