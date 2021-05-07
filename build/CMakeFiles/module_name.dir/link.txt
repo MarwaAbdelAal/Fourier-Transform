@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC   -shared  -o module_name.cpython-36m-x86_64-linux-gnu.so CMakeFiles/module_name.dir/fourier.cpp.o -flto 
