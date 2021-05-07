@@ -43,7 +43,7 @@ cd ../
 
 ### Runnig the program
 ```bash 
-python3 run.py 
+python run.py 
 ```
 
 ## Expected Ouput
