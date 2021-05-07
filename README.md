@@ -7,7 +7,7 @@ Then, Compare the return arrays from both FT and FFT and show the error between 
 
 > I assume you're using linux, using windows should work fine but with some few tweaks.
 
-#### Python 3.9
+#### Python 3.7+
 
 Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
 
