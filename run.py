@@ -7,13 +7,7 @@ from tqdm import tqdm
 from scipy.interpolate import make_interp_spline
 
 ## Initialization
-samples=[]
-numberOfData=[]
-outputFFT=[]
-outputFT=[]
-timeFFT=[]
-timeFT=[]
-error=[]
+samples, numberOfData, outputFFT, outputFT, timeFFT, timeFT, error = [], [], [], [], [], [], []
 for i in range(4):
     samples.append([randint(1,10000) for _ in range(2**(4+i*3))])   
     numberOfData.append(len(samples[i]))
@@ -38,7 +32,7 @@ print('timeFT = ', timeFT[-1])
 ## Error Calculations
 for i in tqdm(range(len(outputFFT))):
     error.append(np.square(np.absolute(np.subtract(outputFT[i],outputFFT[i]))).mean())
-print('error = ', error)
+print('Error = ', error)
 
 ## Time Complexity Plot
 plt.subplot(211)
