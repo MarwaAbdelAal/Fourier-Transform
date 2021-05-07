@@ -1,4 +1,8 @@
-## Implementing FT & FFT in C++ for speed and optimization then compile it into binaries that can be called in python to compare their time complexity and show the error between them.
+# Implementing FT & FFT in C++ 
+C is the ultimate language when we look for speed and optimization. C++ code is compiled into binaries that can be called in Python.
+To validate the implementation, i developed a simple program in python that can call FT functions several times with different signal lengths. For each call, python is used to calculate the time the function will take to return the results. 
+Then, Compare the return arrays from both FT and FFT and show the error between them.
+From the output plot, we can see that FT is in the order of N2 while FFT is in the order of NlogN.
 
 ### Installing Dependencies
 
